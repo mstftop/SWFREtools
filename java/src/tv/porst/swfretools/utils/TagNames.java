@@ -18,7 +18,7 @@ public final class TagNames {
 	 */
 	public static String getPrintableTagName(final int code) {
 		final String tagName = getTagName(code);
-		return tagName == null ? String.format("Unknown tag (%02X%)", code) : tagName;
+		return tagName == null ? String.format("Unknown (0x%2X)", code) : tagName;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public final class TagNames {
 		case TagCodes.DefineFont4: return "DefineFont4";
 		case TagCodes.DoABC: return "DoABC";
 		case TagCodes.RawABC: return "RawABC";
-		default: return null;
+		default: return String.format("Unknown (0x%2X)", code);
 		}
 	}
 }
