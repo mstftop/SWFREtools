@@ -26,7 +26,7 @@ public final class TagParser {
 	 * @param header Header of the tag that could not be parsed.
 	 */
 	private static void jumpToNextTag(final BinaryParser parser, final RecordHeader header) {
-		final int nextTagPosition = header.getBitPosition() / 8 + header.getHeaderLength() + header.getLength();
+		final int nextTagPosition = header.getBitPosition() / 8 + header.getHeaderLength() + header.getNormalizedLength();
 
 		parser.setPosition(nextTagPosition, 0);
 	}
@@ -169,10 +169,9 @@ public final class TagParser {
 
 			errors.add(new ParserError(header.getTagAndLength().getBitPosition(), String.format("Tried to parse tag with unknown tag code 0x%02X", header.getTagCode())));
 
-			// We do not know the type of this tag but we can try to continue parsing at the next tag
-			jumpToNextTag(parser, header);
-
-			return null;
+			// We do not know the type of this tag but we can handle it
+			return UnknownParser.parse(header, parser);
+			
 		} catch (final SWFParserException exception) {
 
 			errors.add(new ParserError(exception.getOffset(), exception.getMessage()));
